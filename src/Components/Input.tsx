@@ -2,13 +2,14 @@ import { type ComponentProps } from "react";
 
 type InputProps = ComponentProps<"input"> & {
   label: string;
+  id: string;
 };
 
-const Input = (InputProps: InputProps) => {
+const Input = ({ id, label, ...props }: InputProps) => {
   return (
     <div style={{ marginBottom: "1rem" }}>
-      <label htmlFor={InputProps.label}>{InputProps.label}</label>
-      <input {...InputProps} id={InputProps.label} name={InputProps.label} />
+      <label htmlFor={id}>{label}</label>
+      <input {...props} id={id} name={id} />
     </div>
   );
 };

@@ -1,11 +1,10 @@
-import "./App.css";
 import Input from "./Components/Input";
 
 function App() {
   return (
     <>
-      <Input label={"Nome"} />
-      <Input label={"Idade"} type="number" />
+      <Input label="Nome" id="nome" />
+      <Input label="Idade" id="idade" type="number" />
     </>
   );
 }
