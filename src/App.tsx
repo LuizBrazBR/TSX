@@ -1,9 +1,11 @@
 import "./App.css";
+import Input from "./Components/Input";
 
 function App() {
   return (
     <>
-      <div>Oi</div>
+      <Input label={"Nome"} />
+      <Input label={"Idade"} type="number" />
     </>
   );
 }
