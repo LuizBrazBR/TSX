@@ -1,73 +1,85 @@
-import React, { useState } from "react";
-import Input from "./Components/Input";
+import React, { useEffect, useRef, useState } from "react";
+
+// Adicione funcionalidades ao player de vídeo:
+
+// 1 - Use um estado reativo para verificar se o vídeo está tocando ou não.
+// 2 - Função para avançar o vídeo em +2s.
+// 3 - Função para alterar o playbackRate do vídeo.
+// 4 - Função para entrar/sair do modo pictureInPicture.
+// 5 - Função para alternar o som (mudo/não mudo) do vídeo.
+
+import videomp4 from "./video.mp4";
 
 function App() {
-  const [data, setData] = useState<Vendas[] | null>(null);
-  const [dataIn, setDataIn] = useState("");
-  const [dataFm, setDataFm] = useState("");
-  const [loading, setLoading] = useState(false);
+  const video = useRef<HTMLVideoElement>(null);
+  const [played, setPlayed] = useState(false);
 
-  React.useEffect(() => {
-    async function data() {
-      if (!!dataIn !== false && !!dataFm !== false) {
-        setLoading(true);
-        try {
-          const response = await fetch(
-            `https://data.origamid.dev/vendas/?inicio=${dataIn}&final=${dataFm}`,
-          );
-          const json = await response.json();
-          setData(json);
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    }
-
-    data();
-  }, [dataIn, dataFm]);
-
-  interface Vendas {
-    id: string;
-    nome: string;
-    preco: number;
-    status: string;
-    pagamento: string;
-    parcelas: number | null;
-    data: string;
-  }
+  useEffect(() => {
+    video.current?.addEventListener("ended", () => {
+      setPlayed(false);
+    });
+  }, []);
 
   return (
     <div>
-      <div>
-        <Input
-          id="dataInicial"
-          type="date"
-          label="Início"
-          change={setDataIn}
-          value={dataIn}
-        />
-        <Input
-          id="dataFinal"
-          type="date"
-          label="Final"
-          change={setDataFm}
-          value={dataFm}
-        />
+      <div className="flex">
+        <button
+          onClick={() => {
+            if (!played) {
+              video.current?.play();
+              setPlayed(true);
+            } else {
+              video.current?.pause();
+              setPlayed(false);
+            }
+          }}
+        >
+          {played ? "Pause" : "Play"}
+        </button>
+        <button
+          onClick={() => {
+            if (video.current)
+              video.current.currentTime = video.current.currentTime + 2;
+          }}
+        >
+          +2s
+        </button>
+        <button
+          onClick={() => {
+            if (video.current) video.current.playbackRate = 1;
+          }}
+        >
+          1x
+        </button>
+        <button
+          onClick={() => {
+            if (video.current) video.current.playbackRate = 2;
+          }}
+        >
+          2x
+        </button>
+        <button
+          onClick={() => {
+            if (document.pictureInPictureElement)
+              document.exitPictureInPicture();
+            else video.current?.requestPictureInPicture();
+          }}
+        >
+          PiP
+        </button>
+
+        <button
+          onClick={() => {
+            if (video.current?.muted) video.current.muted = false;
+            else if (video.current && !video.current?.muted)
+              video.current.muted = true;
+          }}
+        >
+          M
+        </button>
       </div>
       <div>
-        {loading ? (
-          <p>Carregando...</p>
-        ) : (
-          <ul>
-            {data?.map((v) => (
-              <li key={v.id}>
-                {v.nome}: {v.status}
-              </li>
-            ))}
-          </ul>
-        )}
+        <video src={videomp4} controls ref={video} />
       </div>
     </div>
   );
