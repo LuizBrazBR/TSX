@@ -31,7 +31,12 @@ interface Produto {
 }
 
 function App() {
-  console.log(useFetch<Produto>("https://data.origamid.dev/produtos"));
+  // O tipo é informado na chamada do hook.
+  // Cada requisição define o formato esperado da resposta.
+  // Não faz sentido obrigar o hook a sempre retornar um array,
+  // porque algumas APIs retornam um único objeto.
+  const data = useFetch<Produto[]>("https://data.origamid.dev/produtos");
+  console.log(data);
 }
 
 export default App;
