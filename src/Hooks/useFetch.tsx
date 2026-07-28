@@ -23,7 +23,6 @@ const useFetch = <T,>(url: string) => {
         const data = await fetch(url);
         const formattedData = await data.json();
         setData(formattedData);
-        return formattedData;
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);
