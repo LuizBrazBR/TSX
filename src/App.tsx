@@ -32,9 +32,8 @@ import useFetch from "./Hooks/useFetch";
 
 
 function App() {
-  const [data, setData] = useState(Array<Produto>)
-
-  useFetch('https://data.origamid.dev/produtos', data)
+  const [data, setData] = useState(Array<Produto> || null)
+  useFetch<Produto>('https://data.origamid.dev/produtos', setData)
   
 }
 

@@ -10,18 +10,19 @@ interface FetchState<T> {
 
 
 
-const useFetch = (url: string, t: unknown) => {
+const useFetch =  <T,>(url: string, setData: React.Dispatch<React.SetStateAction<T[]>>) => {
 
 
   return (
     useEffect(() => {
-    async function invocarFetch(url: string): Promise<FetchState<typeof t>> {
+    async function invocarFetch(url: string): Promise<FetchState<T>> {
     const data = await fetch(url)
     const formattedData = await data.json()
+    setData(formattedData)
     return formattedData
   }
-      console.log(invocarFetch(url))
-    }, [url])
+      invocarFetch(url)
+    }, [url, setData])
   )
 
   
