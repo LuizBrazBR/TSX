@@ -21,20 +21,17 @@ import useFetch from "./Hooks/useFetch";
 // 5 - Use AbortController para abortar o fetch caso o componente desmonte, antes do fetch ser concluído.
 
 // 6 - Teste o Hook com a api: https://data.origamid.dev/produtos
- interface Produto {
+interface Produto {
   id: string;
   nome: string;
   preco: number;
   quantidade: number;
   descricao: string;
   internacional: boolean;
- }
-
+}
 
 function App() {
-  const [data, setData] = useState(Array<Produto> || null)
-  useFetch<Produto>('https://data.origamid.dev/produtos', setData)
-  
+  console.log(useFetch<Produto>("https://data.origamid.dev/produtos"));
 }
 
 export default App;
