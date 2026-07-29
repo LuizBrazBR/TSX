@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 interface FetchState<T> {
   data: T | null;
@@ -6,10 +6,19 @@ interface FetchState<T> {
   error: string | null;
 }
 
-const useFetch = <T,>(url: string) => {
-  const [data, setData] = useState(null);
+//CONTRATO DE OPTIONS
+interface options {
+  method: string | undefined;
+  headers: HeadersInit | undefined;
+  body: BodyInit | undefined | null;
+}
+
+//OPTIONS É OPCIONAL
+const useFetch = <T,>(URL: string, OPTIONS?: options) => {
+  const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  //Como o TypeScript não consegue adivinhar que depois você pretende colocar uma string, você precisa dizer explicitamente:
+  const [error, setError] = useState<string | null>(null);
 
   const dataInterface: FetchState<T> = {
     data: data,
@@ -18,21 +27,28 @@ const useFetch = <T,>(url: string) => {
   };
 
   useEffect(() => {
-    async function invocarFetch(url: string) {
+    const controller = new AbortController();
+    const request = new Request(URL, OPTIONS);
+
+    async function invocarFetch() {
       try {
-        const data = await fetch(url);
+        const data = await fetch(request);
         const formattedData = await data.json();
         setData(formattedData);
       } catch (error) {
         if (error instanceof Error) {
           setError(error.message);
-        }
+        } else setError(null);
       } finally {
         setLoading(false);
       }
     }
-    invocarFetch(url);
-  }, [url]);
+    invocarFetch();
+
+    return () => {
+      controller.abort();
+    };
+  }, [URL, OPTIONS]);
 
   return dataInterface;
 };

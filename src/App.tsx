@@ -1,7 +1,6 @@
 // Crie um custom hook chamado useFetch.
 
-import { useState } from "react";
-import useFetch from "./Hooks/useFetch";
+import useFetch from './Hooks/useFetch';
 
 // 1 - Este hook deve retornar a interface:
 // interface FetchState<T> {
@@ -35,7 +34,7 @@ function App() {
   // Cada requisição define o formato esperado da resposta.
   // Não faz sentido obrigar o hook a sempre retornar um array,
   // porque algumas APIs retornam um único objeto.
-  const data = useFetch<Produto[]>("https://data.origamid.dev/produtos");
+  const data = useFetch<Produto[]>('https://data.origamid.dev/produtos');
   console.log(data);
 }
 
