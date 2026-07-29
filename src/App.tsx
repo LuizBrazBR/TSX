@@ -12,6 +12,9 @@ import useFetch from "./Hooks/useFetch";
 
 // Onde T é um valor genérico que deverá ser passado quando o Hook for utilizado.
 
+// Estado reativo      → mudança atualiza a UI
+// Estado não reativo  → mudança não atualiza a UI
+// Estado derivado     → valor calculado de outro estado
 // 2 - data, loading e error são estados reativos (useState).
 
 // 3 - O hook deve receber a URL e OPTIONS como argumentos (interfaces de fetch).
