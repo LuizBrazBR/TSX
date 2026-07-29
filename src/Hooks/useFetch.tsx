@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 interface FetchState<T> {
   data: T | null;
@@ -8,9 +8,9 @@ interface FetchState<T> {
 
 //CONTRATO DE OPTIONS
 interface options {
-  method: string | undefined;
-  headers: HeadersInit | undefined;
-  body: BodyInit | undefined | null;
+  method?: string | undefined;
+  headers?: HeadersInit | undefined;
+  body?: BodyInit | undefined | null;
 }
 
 //OPTIONS É OPCIONAL
