@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 interface FetchState<T> {
   data: T | null;
@@ -28,7 +28,13 @@ const useFetch = <T,>(URL: string, OPTIONS?: options) => {
 
   useEffect(() => {
     const controller = new AbortController();
-    const request = new Request(URL, OPTIONS);
+
+    const request = new Request(URL, {
+      signal: controller.signal,
+      //Com ... → as propriedades do objeto são copiadas para dentro do novo objeto.
+      //Sem ... → o objeto entra como uma propriedade.
+      ...OPTIONS,
+    });
 
     async function invocarFetch() {
       try {
@@ -36,6 +42,10 @@ const useFetch = <T,>(URL: string, OPTIONS?: options) => {
         const formattedData = await data.json();
         setData(formattedData);
       } catch (error) {
+        //Se você usar AbortController, trate o AbortError. É o comportamento esperado.
+        if (error instanceof Error && error.name === 'AbortError') {
+          return;
+        }
         if (error instanceof Error) {
           setError(error.message);
         } else setError(null);
